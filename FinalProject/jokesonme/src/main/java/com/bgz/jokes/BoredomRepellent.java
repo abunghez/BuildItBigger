@@ -17,7 +17,7 @@ public class BoredomRepellent {
 
     private ArrayList<String> jokeCache;
     private Iterator<String> jokeIterator;
-    private BoredomRepellent() {
+    public BoredomRepellent() {
         jokeCache = new ArrayList<String>();
         jokeIterator = jokeCache.iterator();
     }
@@ -39,7 +39,7 @@ public class BoredomRepellent {
             jokeCache.add(randomJoke);
         }
 
-
+        jokeIterator=jokeCache.iterator();
         return jokeIterator.next();
     }
 

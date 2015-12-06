@@ -1,19 +1,28 @@
 package com.udacity.gradle.builditbigger;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.Button;
+
+import com.bgz.jokedisplayerlibrary.JokeDisplayActivity;
+import com.bgz.jokes.BoredomRepellent;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    BoredomRepellent br;
+    Button jokeButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        br = new BoredomRepellent();
+        jokeButton = (Button) findViewById(R.id.jokeButton);
     }
 
 
@@ -40,8 +49,41 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void tellJoke(View view){
-        Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
+
+
+        jokeButton.setEnabled(false);
+
+        JokeFetcher fetcher = new JokeFetcher();
+
+        fetcher.execute();
+
     }
 
+    class JokeFetcher extends AsyncTask<Void, Void, Void> {
 
+        String joke;
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            //Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
+            joke = br.getNextJoke();
+
+             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            Intent i = new Intent(MainActivity.this, JokeDisplayActivity.class);
+
+            if (joke != null)
+                i.putExtra(JokeDisplayActivity.EXTRA_JOKE, joke);
+            else
+                i.putExtra(JokeDisplayActivity.EXTRA_JOKE, getString(R.string.no_joke_found));
+
+            startActivity(i);
+            jokeButton.setEnabled(true);
+
+        }
+    }
 }
