@@ -96,21 +96,15 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    class EndpointsJokeFetcher extends JokeFetcher {
+    public class EndpointsJokeFetcher extends JokeFetcher {
 
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
 
             if (myApiService == null) {
                 JokesAPI.Builder builder = new JokesAPI.Builder(AndroidHttp.newCompatibleTransport(),
-                        new AndroidJsonFactory(), null)
-                        .setRootUrl("http://192.168.1.4:8080/_ah/api")
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
+                new AndroidJsonFactory(), null)
+                        .setRootUrl("https://udacity-builditbigger-1152.appspot.com/_ah/api/");
                 myApiService = builder.build();
             }
 
