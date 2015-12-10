@@ -13,7 +13,7 @@ import java.util.Iterator;
 
 public class BoredomRepellent {
     private static final String JOKE_URL="http://api.icndb.com/jokes/random";
-    private static final int JOKE_CACHE_CHUNK=10;
+    private static final int JOKE_CACHE_CHUNK=1;
 
     private ArrayList<String> jokeCache;
     private Iterator<String> jokeIterator;

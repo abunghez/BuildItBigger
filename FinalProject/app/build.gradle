@@ -20,6 +20,16 @@ android {
     }
 
 
+    productFlavors {
+        free {
+            applicationId "com.udacity.gradle.builditibigger.free"
+        }
+        paid {
+            applicationId "com.udacity.gradle.builditibigger.paid"
+        }
+
+    }
+
 
 
 }
@@ -29,6 +39,6 @@ dependencies {
     // Added for AdMob
     compile project(':jokedisplayerlibrary')
     compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.google.android.gms:play-services:8.3.0'
+    freeCompile 'com.google.android.gms:play-services:8.3.0'
     compile project(path: ':jokebackend', configuration: 'android-endpoints')
 }
