@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.bgz.jokedisplayerlibrary.JokeDisplayActivity;
 import com.bgz.jokes.jokesAPI.JokesAPI;
@@ -25,6 +26,7 @@ public class MainActivity extends ActionBarActivity {
     //BoredomRepellent br;
     Button jokeButton;
     JokesAPI myApiService = null;
+    ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         //br = new BoredomRepellent();
         jokeButton = (Button) findViewById(R.id.jokeButton);
+        spinner = (ProgressBar) findViewById(R.id.jokeLoadProgressBar);
     }
 
 
@@ -61,8 +64,10 @@ public class MainActivity extends ActionBarActivity {
 
 
         jokeButton.setEnabled(false);
+        spinner.setVisibility(View.VISIBLE);
 
         JokeFetcher fetcher = new EndpointsJokeFetcher();
+
 
         fetcher.execute();
 
@@ -92,6 +97,7 @@ public class MainActivity extends ActionBarActivity {
 
             startActivity(i);
             jokeButton.setEnabled(true);
+            spinner.setVisibility(View.INVISIBLE);
 
         }
     }
