@@ -1,7 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.content.Context;
-import android.content.Intent;
 import android.test.AndroidTestCase;
 
 import java.util.concurrent.CountDownLatch;

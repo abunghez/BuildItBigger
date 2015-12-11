@@ -1,6 +1,5 @@
 package com.udacity.gradle.builditbigger;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +7,13 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.udacity.gradle.builditbigger.MainActivity;
 
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainFreeActivityFragment extends MainActivityFragment {
+
 
     public MainFreeActivityFragment() {
     }
@@ -30,8 +29,11 @@ public class MainFreeActivityFragment extends MainActivityFragment {
         // "Use AdRequest.Builder.addTestDevice("ABCDEF012345") to get test ads on this device."
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("6B8DCB6D6911B199BF792EC2015AB93B")
                 .build();
         mAdView.loadAd(adRequest);
+
+
         return root;
     }
 }

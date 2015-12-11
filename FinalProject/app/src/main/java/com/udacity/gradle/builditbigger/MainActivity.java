@@ -16,8 +16,6 @@ import com.bgz.jokedisplayerlibrary.JokeDisplayActivity;
 import com.bgz.jokes.jokesAPI.JokesAPI;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
@@ -60,17 +58,16 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void startFetching() {
+        JokeFetcher fetcher = new EndpointsJokeFetcher();
+        fetcher.execute();
+
+    }
     public void tellJoke(View view){
-
-
         jokeButton.setEnabled(false);
         spinner.setVisibility(View.VISIBLE);
 
-        JokeFetcher fetcher = new EndpointsJokeFetcher();
-
-
-        fetcher.execute();
-
+        startFetching();
     }
 
     class JokeFetcher extends AsyncTask<Pair<Context, String>, Void, String> {
