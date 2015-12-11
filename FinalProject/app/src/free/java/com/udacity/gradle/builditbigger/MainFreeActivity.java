@@ -13,6 +13,7 @@ import com.google.android.gms.ads.InterstitialAd;
 public class MainFreeActivity extends MainActivity {
 
     InterstitialAd mInterstitialAd;
+    boolean mCanDisplayJoke;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +24,8 @@ public class MainFreeActivity extends MainActivity {
             @Override
             public void onAdClosed() {
                 Toast.makeText(MainFreeActivity.this, "Ad closed", Toast.LENGTH_LONG).show();
+                mCanDisplayJoke = true;
+                startDisplayerActivity();
                 requestNewInterstitial();
             }
 
@@ -48,6 +51,7 @@ public class MainFreeActivity extends MainActivity {
             public void onAdLoaded() {
                 super.onAdLoaded();
                 Toast.makeText(MainFreeActivity.this, "Ad loaded", Toast.LENGTH_LONG).show();
+                mCanDisplayJoke = false;
             }
         });
 
@@ -64,6 +68,10 @@ public class MainFreeActivity extends MainActivity {
         mInterstitialAd.loadAd(adRequest);
     }
 
+    @Override
+    protected boolean canDisplayJoke() {
+        return mCanDisplayJoke;
+    }
 
     @Override
     protected void startFetching() {

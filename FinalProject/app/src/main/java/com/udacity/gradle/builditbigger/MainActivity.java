@@ -25,6 +25,7 @@ public class MainActivity extends ActionBarActivity {
     Button jokeButton;
     JokesAPI myApiService = null;
     ProgressBar spinner;
+    String mJoke;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +71,32 @@ public class MainActivity extends ActionBarActivity {
         startFetching();
     }
 
+    protected boolean canDisplayJoke() {
+        return true;
+    }
+    protected void startDisplayerActivity() {
+        Intent i = new Intent(MainActivity.this, JokeDisplayActivity.class);
+
+        if (!canDisplayJoke())
+            return;
+        if (mJoke != null)
+            i.putExtra(JokeDisplayActivity.EXTRA_JOKE, mJoke);
+        else
+            i.putExtra(JokeDisplayActivity.EXTRA_JOKE, getString(R.string.no_joke_found));
+
+        startActivity(i);
+        jokeButton.setEnabled(true);
+        spinner.setVisibility(View.INVISIBLE);
+    }
+
     class JokeFetcher extends AsyncTask<Pair<Context, String>, Void, String> {
 
-        String joke;
+
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
 
             //Toast.makeText(this, "derp", Toast.LENGTH_SHORT).show();
-            //joke = br.getNextJoke();
+            //mJoke = br.getNextJoke();
 
             return null;
         }
@@ -85,17 +104,8 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(String aString) {
             super.onPostExecute(aString);
-            Intent i = new Intent(MainActivity.this, JokeDisplayActivity.class);
 
-            if (joke != null)
-                i.putExtra(JokeDisplayActivity.EXTRA_JOKE, joke);
-            else
-                i.putExtra(JokeDisplayActivity.EXTRA_JOKE, getString(R.string.no_joke_found));
-
-            startActivity(i);
-            jokeButton.setEnabled(true);
-            spinner.setVisibility(View.INVISIBLE);
-
+            startDisplayerActivity();
         }
     }
 
@@ -112,10 +122,10 @@ public class MainActivity extends ActionBarActivity {
             }
 
             try {
-                joke =  myApiService.getJoke().execute().getData();
+                mJoke =  myApiService.getJoke().execute().getData();
             } catch (IOException e) {
                 e.printStackTrace();
-                joke = null;
+                mJoke = null;
             }
             return null;
         }

@@ -22,7 +22,7 @@ public class JokeFetcherTest extends AndroidTestCase {
         class EndpointsFetcherTest extends EndpointsJokeFetcher {
             @Override
             protected void onPostExecute(String aString) {
-                retrievedJoke = joke;
+                retrievedJoke = mJoke;
                 signal.countDown();
             }
         }
