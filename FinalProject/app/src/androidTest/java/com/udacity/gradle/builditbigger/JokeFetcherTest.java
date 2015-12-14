@@ -12,14 +12,28 @@ public class JokeFetcherTest extends AndroidTestCase {
     CountDownLatch signal;
 
     class MainActivityTest extends MainActivity {
+
+        private String mUrl;
         public String retrievedJoke;
+
+
+        public void setUrl(String mUrl) {
+            this.mUrl = mUrl;
+        }
+
         public void tellJoke() {
-            JokeFetcher fetcher = new EndpointsFetcherTest();
+            JokeFetcher fetcher = new EndpointsFetcherTest(mUrl);
 
             fetcher.execute();
 
         }
         class EndpointsFetcherTest extends EndpointsJokeFetcher {
+
+
+            public EndpointsFetcherTest(String url) {
+                super(url);
+            }
+
             @Override
             protected void onPostExecute(String aString) {
                 retrievedJoke = mJoke;
@@ -28,20 +42,33 @@ public class JokeFetcherTest extends AndroidTestCase {
         }
     }
 
-    public void testVerifyJokeFetcherAsyncTask() {
+    public void testVerifyJokeFetcherAsyncTaskRemote() {
 
         MainActivityTest at;
 
         at = new MainActivityTest();
+        at.setUrl(getContext().getString(R.string.endpoint_url));
+        getJokes(at);
 
+    }
 
+    public void testVerifyJokeFetcherAsyncTaskLocally() {
+        MainActivityTest at;
 
-        for (int i = 0; i < 20; i++) {
+        at = new MainActivityTest();
+        at.setUrl(getContext().getString(R.string.local_url));
+        getJokes(at);
+
+    }
+
+    private void getJokes(MainActivityTest at) {
+
+        for (int i = 0; i < 1; i++) {
             signal = new CountDownLatch(1);
             at.tellJoke();
             try {
 
-                assertTrue(signal.await(10, TimeUnit.SECONDS));
+                assertTrue(signal.await(20, TimeUnit.SECONDS));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 assertTrue(false);
@@ -52,5 +79,6 @@ public class JokeFetcherTest extends AndroidTestCase {
             assertFalse(at.retrievedJoke.equals(""));
 
         }
+
     }
 }

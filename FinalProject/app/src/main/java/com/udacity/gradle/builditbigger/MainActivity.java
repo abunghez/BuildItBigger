@@ -60,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void startFetching() {
-        JokeFetcher fetcher = new EndpointsJokeFetcher();
+        JokeFetcher fetcher = new EndpointsJokeFetcher(getString(R.string.endpoint_url));
         fetcher.execute();
 
     }
@@ -111,13 +111,26 @@ public class MainActivity extends ActionBarActivity {
 
     public class EndpointsJokeFetcher extends JokeFetcher {
 
+        String mUrl;
+
+        public EndpointsJokeFetcher(String url) {
+            mUrl = url;
+        }
+
+
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
 
+
             if (myApiService == null) {
+
+                if (mUrl == null) {
+                    mJoke=null;
+                    return null;
+                }
                 JokesAPI.Builder builder = new JokesAPI.Builder(AndroidHttp.newCompatibleTransport(),
                 new AndroidJsonFactory(), null)
-                        .setRootUrl("https://udacity-builditbigger-1152.appspot.com/_ah/api/");
+                        .setRootUrl(mUrl);
                 myApiService = builder.build();
             }
 
