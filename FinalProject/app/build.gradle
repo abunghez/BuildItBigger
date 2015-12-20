@@ -1,3 +1,6 @@
+
+import com.wiredforcode.gradle.spawn.*
+
 apply plugin: 'com.android.application'
 
 android {
@@ -33,6 +36,16 @@ android {
 
 
 }
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.wiredforcode:gradle-spawn-plugin:0.6.0"
+    }
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -41,4 +54,23 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
     freeCompile 'com.google.android.gms:play-services:8.3.0'
     compile project(path: ':jokebackend', configuration: 'android-endpoints')
+}
+
+apply plugin: 'com.wiredforcode.spawn'
+
+task cleanupLocalServer(dependsOn:':jokebackend:appengineStop', type: Delete) {
+    delete '../.pid.lock'
+
+}
+task startLocalServer(dependsOn: 'cleanupLocalServer', type: SpawnProcessTask) {
+    command "gradle :jokebackend:appengineRun"
+    ready 'Dev App Server is now running'
+}
+
+task runAllTests(dependsOn: 'startLocalServer', type: Exec) {
+    commandLine 'gradle','connectedCheck'
+}
+
+task jokeTesting(dependsOn:'runAllTests', type: Exec) {
+    commandLine 'gradle', ':jokebackend:appengineStop'
 }
